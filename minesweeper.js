@@ -68,6 +68,7 @@ document.addEventListener('DOMContentLoaded',()=>{
                         count++;
                     }
                 }
+            }
         }
         //if cell is on left edge but not a corner
         else if(cellIndex%width===0&& !corners.includes(cellIndex)){
@@ -118,7 +119,7 @@ document.addEventListener('DOMContentLoaded',()=>{
                     count++;
                 }
             }
-        }
+        };
         //
         // function checkCells(neighborCells){
         //     for (let j=0;j< neighborCells.length;j++){
@@ -126,7 +127,7 @@ document.addEventListener('DOMContentLoaded',()=>{
         //             count++;
         //         }
         //     }
-        };
+        // };
 
         return count;
     };
