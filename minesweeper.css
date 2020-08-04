@@ -40,12 +40,17 @@ body{
 }
 
 .cell{
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     position: relative;
     height: 10%;
     width: 10%;
+    font-weight: bold;
 }
 
+/* light colored cells in the checkerboard */
 .light{
     background-color: #1b1a1a;
 }
@@ -55,6 +60,7 @@ body{
     box-shadow: inset 0px 0px 5px #2a4f4a;
 }
 
+/* dark colored cells in the checkerboard */
 .dark{
     background-color: #262626;
 }
@@ -70,6 +76,39 @@ body{
 
 .dark.clicked{
     background-color:#5e4e6b;
+}
+
+/* custom color for each bomb count */
+.cell[count='1']{
+    color:#9ef7ba;
+}
+.cell[count='2']{
+    color:#5babec;
+}
+.cell[count='3']{
+    color:#dfcf61;
+}
+.cell[count='4']{
+    color:#e97e1c;
+}
+.cell[count='5']{
+    color:#940404;
+}
+.cell[count='6']{
+    color:#1a0926;
+}
+/* god save you if you get these */
+.cell[count='7']{
+    color:#cf37dd;
+}
+.cell[count='8']{
+    color:#ffa4a4;
+}
+
+.cell.clicked.bomb{
+    color:#1a0926;
+    background-color:#752f2f;
+    /* box-shadow: inset 0px 0px 5px #ed6464; */
 }
 
 .bomb{
