@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     let gameOver = false;
 
     //creating the game logic arrays
-    const bombCount = 20;
+    const bombCount = 10;
     const bombCells = Array(bombCount).fill('bomb');
     const emptyCells = Array(width*width-bombCount).fill('empty');
     const combinedCells =  bombCells.concat(emptyCells);
@@ -151,7 +151,6 @@ document.addEventListener('DOMContentLoaded',()=>{
         const count=Number(this.getAttribute('count'));
         if (this.classList.contains('bomb')){
             this.innerHTML='&#11044;'
-            this.classList.add('clicked');
             triggerAllBombs();
             gameOver = true;
             // alert('Game over');
@@ -160,10 +159,96 @@ document.addEventListener('DOMContentLoaded',()=>{
         else if(count!=0){
             this.innerHTML=count;
         }
-
+        else if(count===0){
+            setTimeout(recursiveCheckNeighbors(this),10);
+        }
 
         //paints the cell as clicked
         this.classList.add('clicked');
+    };
+
+    function recursiveCheckNeighbors(cell){
+        if(!cell.classList.contains('clicked')){
+            cell.classList.add('clicked');
+            console.log(cell);
+            cellIndex=Number(cell.getAttribute('id'));
+
+            corners=[0,(width-1),width*(width-1),width*width-1];
+            //indices of neighboring cells
+            const top=cellIndex-width;
+            const topLeft=(cellIndex-width)-1;
+            const topRight=(cellIndex-width)+1;
+            const bottom=(cellIndex+width);
+            const bottomLeft=(cellIndex+width)-1;
+            const bottomRight=(cellIndex+width)+1;
+            const right=cellIndex+1;
+            const left=cellIndex-1;
+
+            //if cell is not on left or right edge
+            if(cellIndex%width!=0&&cellIndex%width!=9){
+                //if cell is not on top or bottom edge
+                if(cellIndex<90&&cellIndex>9){
+                    //indices of all the neighboring cells
+                    const neighborCells = [topLeft,top,topRight,left,right,bottomLeft,bottom,bottomRight];
+                    clearCells(neighborCells);
+                }
+                //if cell is in bottom row
+                else if(cellIndex>90&&!corners.includes(cellIndex)){
+                    const neighborCells = [left,right,topLeft,top,topRight];
+                    clearCells(neighborCells);
+                }
+                else if(cellIndex<10&&!corners.includes(cellIndex)){
+                    const neighborCells = [left,right,bottomLeft,bottom,bottomRight];
+                    clearCells(neighborCells);
+                }
+            }
+            //if cell is on left edge but not a corner
+            else if(cellIndex%width===0&& !corners.includes(cellIndex)){
+                const neighborCells = [top,topRight,right,bottom,bottomRight];
+                clearCells(neighborCells);
+            }
+            //if cell is on right edge but not a corner
+            else if(cellIndex%width===9&& !corners.includes(cellIndex)){
+                const neighborCells = [topLeft,top,left,bottomLeft,bottom];
+                clearCells(neighborCells);
+            }
+            //if cells are in the 4 corners
+            //top left
+            else if(cellIndex===0){
+                const neighborCells = [right,bottomRight,bottom];
+                clearCells(neighborCells);
+            }
+            //top right
+            else if(cellIndex===(width-1)){
+                const neighborCells = [left,bottomLeft,bottom];
+                clearCells(neighborCells);
+            }
+            //bottom left
+            else if(cellIndex===(width*(width-1))){
+                const neighborCells = [right,topRight,top];
+                clearCells(neighborCells);
+            }
+            //bottom right
+            else{
+                const neighborCells = [left,topLeft,top];
+                clearCells(neighborCells);
+            };
+
+            function clearCells(neighborCells){
+                neighborCells.forEach((item)=>{
+                    cell=document.getElementById(item);
+                    count=Number(cell.getAttribute('count'));
+                    //if the cell is empty recursively clear the neighboring cells
+                    if(count===0){
+                        recursiveCheckNeighbors(cell);
+                    }
+                    else{
+                        cell.innerHTML=count;
+                        cell.classList.add('clicked');
+                    }
+                });
+            }
+        }
     };
 
     //triggers all bombs sequentially
@@ -179,6 +264,5 @@ document.addEventListener('DOMContentLoaded',()=>{
                 },i*200);
             };
         });
-        console.log(bombs);
     };
 });
