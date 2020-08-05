@@ -150,6 +150,8 @@ document.addEventListener('DOMContentLoaded',()=>{
         //if cell has bomb end game
         const count=Number(this.getAttribute('count'));
         if (this.classList.contains('bomb')){
+            this.innerHTML='&#11044;'
+            this.classList.add('clicked');
             triggerAllBombs();
             gameOver = true;
             // alert('Game over');
@@ -164,14 +166,18 @@ document.addEventListener('DOMContentLoaded',()=>{
         this.classList.add('clicked');
     };
 
+    //triggers all bombs sequentially
     function triggerAllBombs(){
-        bombs = document.querySelectorAll('.bomb');
+        //randomizing the order in which the bombs are triggered as top to bottom doesn't look good
+        bombs = shuffle(Array.from(document.querySelectorAll('.bomb')));
         bombs.forEach((bomb,i)=>{
-            //detonate bombs one by one with a delay between them
-            setTimeout(()=>{
-                bomb.classList.add('clicked');
-                bomb.innerHTML='&#11044;'
-            },i*200);
+            if(!bomb.classList.contains('clicked')){
+                //detonate bombs one by one with a delay between them
+                setTimeout(()=>{
+                    bomb.classList.add('clicked');
+                    bomb.innerHTML='&#11044;'
+                },i*200);
+            };
         });
         console.log(bombs);
     };
