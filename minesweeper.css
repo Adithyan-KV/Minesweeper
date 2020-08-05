@@ -114,3 +114,9 @@ body{
 /* .bomb{
     background-color:orange;
 } */
+
+.flagged{
+    font-size: 2em;
+    /* important added so that flags don't take style of underlying count and reveal information */
+    color:orange !important;
+}

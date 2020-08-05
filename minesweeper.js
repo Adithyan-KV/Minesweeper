@@ -140,12 +140,20 @@ document.addEventListener('DOMContentLoaded',()=>{
     //implementing gameplay
     cells = document.querySelectorAll('.cell');
     cells.forEach((cell)=>{cell.addEventListener('click', clicked)});
+    cells.forEach((cell)=>{cell.addEventListener('contextmenu', (e)=>{
+        e.preventDefault();
+        addFlag(cell);
+    })});
 
     //if a cell gets clicked
     function clicked(){
         //if game over do nothing
         if(gameOver){
-            return false
+            return false;
+        }
+        //if the cell is already flagged do nothing
+        if(this.classList.contains('flagged')){
+            return false;
         }
         //if cell has bomb end game
         const count=Number(this.getAttribute('count'));
@@ -166,6 +174,24 @@ document.addEventListener('DOMContentLoaded',()=>{
         //paints the cell as clicked
         this.classList.add('clicked');
     };
+
+    function addFlag(cell){
+        //if game over then do nothing
+        if(gameOver){
+            return false;
+        }
+        // if cell is unclicked, add a flag
+        if(!cell.classList.contains('clicked')){
+            if(cell.classList.contains('flagged')){
+                cell.classList.remove('flagged');
+                cell.innerHTML='';
+            }
+            else{
+                cell.classList.add('flagged');
+                cell.innerHTML='&#9760;';
+            }
+        }
+    }
 
     function recursiveCheckNeighbors(cell){
         if(!cell.classList.contains('clicked')){
