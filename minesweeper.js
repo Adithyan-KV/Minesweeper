@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded',()=>{
 
     let minefield = document.querySelector('.minefield');
 
+    let gameOver = false;
+
     //creating the game logic arrays
     const bombCount = 20;
     const bombCells = Array(bombCount).fill('bomb');
@@ -135,19 +137,21 @@ document.addEventListener('DOMContentLoaded',()=>{
         return count;
     };
 
-
-
-
     //implementing gameplay
     cells = document.querySelectorAll('.cell');
     cells.forEach((cell)=>{cell.addEventListener('click', clicked)});
 
     //if a cell gets clicked
     function clicked(){
+        //if game over do nothing
+        if(gameOver){
+            return false
+        }
         //if cell has bomb end game
         const count=Number(this.getAttribute('count'));
         if (this.classList.contains('bomb')){
-            this.innerHTML='&#11044;';
+            triggerAllBombs();
+            gameOver = true;
             // alert('Game over');
         }
         //if cell contains bomb display count on click
@@ -158,5 +162,17 @@ document.addEventListener('DOMContentLoaded',()=>{
 
         //paints the cell as clicked
         this.classList.add('clicked');
+    };
+
+    function triggerAllBombs(){
+        bombs = document.querySelectorAll('.bomb');
+        bombs.forEach((bomb,i)=>{
+            //detonate bombs one by one with a delay between them
+            setTimeout(()=>{
+                bomb.classList.add('clicked');
+                bomb.innerHTML='&#11044;'
+            },i*200);
+        });
+        console.log(bombs);
     };
 });
