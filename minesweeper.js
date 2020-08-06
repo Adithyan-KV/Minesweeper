@@ -207,6 +207,9 @@ document.addEventListener('DOMContentLoaded',()=>{
             this.innerHTML='&#11044;'
             triggerAllBombs();
             gameOver = true;
+            message = document.querySelector('.message');
+            message.innerHTML = 'BOOM goes the landmine';
+            message.classList.add('loss');
             // alert('Game over');
         }
         //if cell contains bomb display count on click
@@ -235,6 +238,7 @@ document.addEventListener('DOMContentLoaded',()=>{
                 }
                 cell.classList.remove('flagged');
                 cell.innerHTML='';
+                checkWin();
             }
             else{
                 flagCount--;
@@ -242,6 +246,7 @@ document.addEventListener('DOMContentLoaded',()=>{
                 cell.classList.add('flagged');
                 //add flag character, UTF skull and bones
                 cell.innerHTML='&#9760;';
+                checkWin();
             }
         }
     }
@@ -343,4 +348,36 @@ document.addEventListener('DOMContentLoaded',()=>{
             };
         });
     };
+
+    //checks if all the cells which have bombs in them have been flagged
+    function checkWin(){
+        console.log('checking win');
+        cells= document.querySelectorAll('.bomb');
+        flags= document.querySelectorAll('.flagged');
+        if(flagCount===0 && nodeListsAreEqual(cells,flags)){
+            console.log('you won');
+            gameOver = true;
+            message = document.querySelector('.message');
+            message.innerHTML = 'Mines Cleared!';
+            clearAllCells();
+        }
+    }
+
+    function nodeListsAreEqual( list1, list2 ) {
+        if ( list1.length !== list2.length ) {
+            return false;
+        }
+        return Array.from( list1 ).every( ( node, index ) => node === list2[ index ] );
+    };
+
+    function clearAllCells(){
+        cells = document.querySelectorAll('.cell');
+        cells.forEach((cell)=>{
+            if(!cell.classList.contains('bomb')){
+                cell.classList.add('clicked');
+            }
+        })
+    }
+
+
 });
