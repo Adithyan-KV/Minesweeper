@@ -30,13 +30,13 @@ body{
     font-family: 'Helvetica',sans-serif;
     align-items: center;
     justify-content: center;
-    color:#97ec7d;
+    color:#6a6a6a;
 }
 
 .message.loss{
     font-size: 2em;
     text-shadow: 0px 0px 5px black;
-    color:#e95454;
+    color:#dddddd;
 }
 
 .stats-container{
