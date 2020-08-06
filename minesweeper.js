@@ -16,10 +16,22 @@ document.addEventListener('DOMContentLoaded',()=>{
     const emptyCells = Array(width*width-bombCount).fill('empty');
     const combinedCells =  bombCells.concat(emptyCells);
 
+    //variables for the timer
     var minutesLabel = document.getElementById("minutes");
     var secondsLabel = document.getElementById("seconds");
     var totalSeconds = 0;
 
+    //variable for counting the number of flags the user has to use
+    var flagCount = bombCount;
+
+    function updateFlagCount(newCount){
+        count = document.querySelector('#flag-count');
+        //timeout to allow the variable enough time to change
+        setTimeout(()=>{
+            count.innerHTML = newCount;
+        },10);
+
+    }
 
     //set the timer value
     function setTime() {
@@ -217,10 +229,16 @@ document.addEventListener('DOMContentLoaded',()=>{
         // if cell is unclicked, add a flag
         if(!cell.classList.contains('clicked')){
             if(cell.classList.contains('flagged')){
+                if(flagCount!=bombCount){
+                    flagCount++;
+                    updateFlagCount(flagCount);
+                }
                 cell.classList.remove('flagged');
                 cell.innerHTML='';
             }
             else{
+                flagCount--;
+                updateFlagCount(flagCount);
                 cell.classList.add('flagged');
                 //add flag character, UTF skull and bones
                 cell.innerHTML='&#9760;';
@@ -231,7 +249,6 @@ document.addEventListener('DOMContentLoaded',()=>{
     function recursiveCheckNeighbors(cell){
         if(!cell.classList.contains('clicked')){
             cell.classList.add('clicked');
-            console.log(cell);
             cellIndex=Number(cell.getAttribute('id'));
 
             corners=[0,(width-1),width*(width-1),width*width-1];
