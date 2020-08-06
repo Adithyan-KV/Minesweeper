@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded',()=>{
 
     let minefield = document.querySelector('.minefield');
 
+    let gameStart=false;
+
     let gameOver = false;
 
     //creating the game logic arrays
@@ -13,6 +15,32 @@ document.addEventListener('DOMContentLoaded',()=>{
     const bombCells = Array(bombCount).fill('bomb');
     const emptyCells = Array(width*width-bombCount).fill('empty');
     const combinedCells =  bombCells.concat(emptyCells);
+
+    var minutesLabel = document.getElementById("minutes");
+    var secondsLabel = document.getElementById("seconds");
+    var totalSeconds = 0;
+
+
+    //set the timer value
+    function setTime() {
+        //if game is not over, increment time
+        if(!gameOver){
+            ++totalSeconds;
+            secondsLabel.innerHTML = pad(totalSeconds % 60);
+            minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
+        }
+    }
+
+    //calculate the padding required for proper formatting of timer
+    function pad(val) {
+        var valString = val + "";
+        if (valString.length < 2) {
+            return "0" + valString;
+        }
+        else {
+            return valString;
+        }
+    };
 
     //Shuffles the array using a Fisher-Yates shuffle
     function shuffle(array){
@@ -147,6 +175,12 @@ document.addEventListener('DOMContentLoaded',()=>{
 
     //if a cell gets clicked
     function clicked(){
+        //if game hasn't started yet, start the timer
+        if(!gameStart){
+            gameStart= true;
+            setInterval(setTime, 1000);
+        }
+
         //if game over do nothing
         if(gameOver){
             return false;
@@ -188,6 +222,7 @@ document.addEventListener('DOMContentLoaded',()=>{
             }
             else{
                 cell.classList.add('flagged');
+                //add flag character, UTF skull and bones
                 cell.innerHTML='&#9760;';
             }
         }
