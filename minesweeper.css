@@ -176,8 +176,8 @@ body{
     color:orange !important;
 }
 
-.flagged.clicked{
+.bomb.flagged.clicked{
     font-size: 1em;
     color:black !important;
-    background-color: #5d8530 !important;
+    background-color: #5d8530;
 }

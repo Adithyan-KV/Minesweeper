@@ -252,7 +252,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     }
 
     function recursiveCheckNeighbors(cell){
-        if(!cell.classList.contains('clicked')){
+        if(!cell.classList.contains('clicked')&&!cell.classList.contains('flagged')){
             cell.classList.add('clicked');
             cellIndex=Number(cell.getAttribute('id'));
 
@@ -322,12 +322,14 @@ document.addEventListener('DOMContentLoaded',()=>{
                     cell=document.getElementById(item);
                     count=Number(cell.getAttribute('count'));
                     //if the cell is empty recursively clear the neighboring cells
-                    if(count===0){
-                        recursiveCheckNeighbors(cell);
-                    }
-                    else{
-                        cell.innerHTML=count;
-                        cell.classList.add('clicked');
+                    if(!cell.classList.contains('flagged')){                        
+                        if(count===0){
+                            recursiveCheckNeighbors(cell);
+                        }
+                        else{
+                            cell.innerHTML=count;
+                            cell.classList.add('clicked');
+                        }
                     }
                 });
             }
